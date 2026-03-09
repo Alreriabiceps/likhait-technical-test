@@ -47,6 +47,15 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
 
     if (!formData.date) {
       newErrors.date = "Date is required";
+    } else {
+      const [year, month, day] = formData.date.split("-").map(Number);
+      const selectedDate = new Date(year, month - 1, day);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (selectedDate > today) {
+        newErrors.date =
+          "Expense date cannot be in the future. You can only add expenses for today or past dates.";
+      }
     }
 
     setErrors(newErrors);
