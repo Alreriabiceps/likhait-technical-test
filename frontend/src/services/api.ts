@@ -70,10 +70,14 @@ export async function createExpense(data: ExpenseFormData): Promise<Expense> {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(
-      errorData.errors?.join(", ") || "Failed to create expense",
-    );
+    let message = "Failed to create expense";
+    try {
+      const errorData = await response.json();
+      message = errorData.errors?.join(", ") || message;
+    } catch {
+      // Ignore non-JSON error bodies and keep fallback message
+    }
+    throw new Error(message);
   }
 
   return response.json();
@@ -95,10 +99,14 @@ export async function updateExpense(
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(
-      errorData.errors?.join(", ") || "Failed to update expense",
-    );
+    let message = "Failed to update expense";
+    try {
+      const errorData = await response.json();
+      message = errorData.errors?.join(", ") || message;
+    } catch {
+      // Ignore non-JSON error bodies and keep fallback message
+    }
+    throw new Error(message);
   }
 
   return response.json();

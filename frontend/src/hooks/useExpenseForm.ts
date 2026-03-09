@@ -48,8 +48,8 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
     if (!formData.date) {
       newErrors.date = "Date is required";
     } else {
-      const selectedDate = new Date(formData.date);
-      selectedDate.setHours(0, 0, 0, 0);
+      const [year, month, day] = formData.date.split("-").map(Number);
+      const selectedDate = new Date(year, month - 1, day);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (selectedDate > today) {
